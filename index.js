@@ -9,14 +9,16 @@ const PORT = process.env.PORT || 5000;
 passport.use(
 	new GoogleStrategy(
 		{
-			clientID: keys.googleClientIdD,
+			clientID: keys.googleClientID,
 			clientSecret: keys.googleClientSecret,
 			// 在用户同意permission后,用户将要被导向的url
 			callbackURL: "/auth/google/callback",
+			// proxy: true,
 		},
-		(accessToken) => {
-			console.log("access token: ");
-			console.log(accessToken);
+		(accessToken, refreshToken, profile, done) => {
+			console.log("accessToken", accessToken);
+			console.log("refreshToken: ", refreshToken);
+			console.log("profile: ", profile);
 		}
 	)
 );
@@ -34,5 +36,5 @@ app.get(
 app.get("/auth/google/callback", passport.authenticate("google"));
 
 app.listen(PORT, () => {
-	console.log("server start on PORT", port);
+	console.log("server start on PORT", PORT);
 });
